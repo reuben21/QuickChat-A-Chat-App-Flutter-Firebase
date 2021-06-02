@@ -5,16 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
-
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
-
-
-  CollectionReference chat = FirebaseFirestore.instance.collection('chat');
 
 
   @override
@@ -27,45 +22,39 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
+  CollectionReference _sendMessage = FirebaseFirestore.instance.collection('chat');
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
     return Scaffold(
-      body: FutureBuilder<DocumentSnapshot>(
-        future: chat.doc('9ieKCJJ8OqQouvgKF5Xz').get(),
-        builder:
-            (BuildContext context, AsyncSnapshot snapshot) {
+      body:StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('chat').snapshots(),
+        builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Text('Something went wrong');
+      }
 
-          if (snapshot.hasError) {
-            return Text("Something went wrong");
-          }
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Text("Loading");
+      }
+      final documents = snapshot.data!.docs;
+      return new ListView.builder(
+        itemCount: documents.length,
+        itemBuilder:(ctx,index)=> Container(
+            child: new Text(documents[index]['text']),
 
-          if (snapshot.hasData && !snapshot.data!.exists) {
-            return Text("Document does not exist");
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data = snapshot.data!.data();
-
-            print(data.toString());
-            return  ListView.builder(
-              itemBuilder: (ctx, index) => Container(
-                padding: EdgeInsets.all(8),
-                child: Text('${data['text']}'),
-              ),
-              itemCount: 10,
-            );
-          }
-
-          return Text("loading");
-        },
+          )
+        );}
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
 
-      },
-  child: Icon(Icons.add),
+
+    floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _sendMessage.add({'text':"FloatingActionButton"}).then((value) => print("User Added"))
+              .catchError((error) => print("Failed to add user: $error"));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
 }
-
