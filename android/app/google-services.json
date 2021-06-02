@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "856596572128",
+    "project_id": "quick-chat-flutter",
+    "storage_bucket": "quick-chat-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856596572128:android:d56723daeab24e26876d85",
+        "android_client_info": {
+          "package_name": "com.reubencoutinho.chat_app_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856596572128-oqfe83i08vcan874psbtljdied6f5te2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_T09PTG6HPywNblMw30A-pLsIclMwyCw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856596572128-oqfe83i08vcan874psbtljdied6f5te2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
