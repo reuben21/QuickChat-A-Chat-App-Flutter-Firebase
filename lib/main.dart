@@ -1,3 +1,4 @@
+import 'package:chat_app_firebase/screens/auth_screen.dart';
 import 'package:chat_app_firebase/screens/chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
               headline1: GoogleFonts.lato(fontSize: 25, color: kSecondaryColor),
             ),
       ),
-      home: ChatScreen(),
+      home: AuthScreen(),
     );
   }
 }

@@ -22,7 +22,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  CollectionReference _sendMessage = FirebaseFirestore.instance.collection('chat');
+
   @override
   Widget build(BuildContext context) {
 
@@ -50,7 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _sendMessage.add({'text':"FloatingActionButton"}).then((value) => print("User Added"))
+          FirebaseFirestore.instance.collection('chat').add({'text':"FloatingActionButton"}).then((value) => print("User Added"))
               .catchError((error) => print("Failed to add user: $error"));
         },
         child: Icon(Icons.add),
