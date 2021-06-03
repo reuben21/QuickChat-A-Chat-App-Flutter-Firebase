@@ -5,8 +5,11 @@ class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return  StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('chat').snapshots(),
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('chat')
+            .orderBy('createdAt',descending: true)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -17,10 +20,11 @@ class Messages extends StatelessWidget {
           }
           final documents = snapshot.data!.docs;
           return new ListView.builder(
+              reverse: true,
               itemCount: documents.length,
               itemBuilder: (ctx, index) => Container(
-                child: new Text(documents[index]['text']),
-              ));
+                    child: new Text(documents[index]['text']),
+                  ));
         });
   }
 }
