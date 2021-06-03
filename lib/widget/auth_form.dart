@@ -2,7 +2,8 @@ import 'package:chat_app_firebase/colors.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn);
+  AuthForm(this.submitFn,this.isLoading);
+  final bool isLoading;
 
   final void Function(
     String email,
@@ -98,10 +99,14 @@ class _AuthFormState extends State<AuthForm> {
                     },
                   ),
                   SizedBox(height: 12),
+                  if(widget.isLoading)
+                    CircularProgressIndicator(),
+                  if(!widget.isLoading)
                   RaisedButton(
                     child: Text(_isLogin ? 'Login' : 'Signup'),
                     onPressed: _trySubmit,
                   ),
+                  if(!widget.isLoading)
                   FlatButton(
                     textColor: Theme.of(context).primaryColor,
                     child: Text(_isLogin
