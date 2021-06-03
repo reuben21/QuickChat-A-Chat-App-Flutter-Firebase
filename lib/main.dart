@@ -1,12 +1,18 @@
 import 'package:chat_app_firebase/screens/auth_screen.dart';
 import 'package:chat_app_firebase/screens/chat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'colors.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp().whenComplete(() {
+
+    runApp(MyApp());
+  });
+
 
 }
 
@@ -18,19 +24,18 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+
   @override
   void initState() {
-    Firebase.initializeApp().whenComplete(() {
-      print("completed");
-      setState(() {});
-    });
+
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'QuickChatt',
+      title: 'QuickChat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryIconTheme: IconThemeData(color: kSecondaryColor),
@@ -46,7 +51,13 @@ class _MyAppState extends State<MyApp> {
               headline1: GoogleFonts.lato(fontSize: 25, color: kSecondaryColor),
             ),
       ),
-      home: AuthScreen(),
+      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: ( context, snapshot) {
+        if(snapshot.hasData) {
+          return ChatScreen();
+        }
+        return AuthScreen();
+
+      },)
     );
   }
 }
