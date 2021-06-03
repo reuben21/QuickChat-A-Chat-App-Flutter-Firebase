@@ -1,5 +1,6 @@
 import 'package:chat_app_firebase/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,14 +25,15 @@ class _NewMessageState extends State<NewMessage> {
     super.dispose();
   }
 
-  void _sendMessage(){
+  void _sendMessage() async {
+    final user = await FirebaseAuth.instance.currentUser;
     FocusScope.of(context).unfocus();
     FirebaseFirestore.instance
         .collection('chat')
         .add({
-        'text':_enteredMessaged,
-      'createdAt':Timestamp.now(),
-      'userId':User
+          'text': _enteredMessaged,
+          'createdAt': Timestamp.now(),
+          'userId': user!.uid.toString()
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -48,17 +50,21 @@ class _NewMessageState extends State<NewMessage> {
         children: <Widget>[
           Expanded(
             child: TextField(
-              controller:_controller,
-              onChanged: (value){
-                _enteredMessaged = value;
-              },
+                controller: _controller,
+                onChanged: (value) {
+                  _enteredMessaged = value;
+                },
                 decoration: InputDecoration(
-              labelText: 'Send a Message',
-              labelStyle: TextStyle(color: kPrimaryColor),
-            )),
+                  labelText: 'Send a Message',
+                  labelStyle: TextStyle(color: kPrimaryColor),
+                )),
           ),
-          IconButton(onPressed: _enteredMessaged.trim().isEmpty ? null : _sendMessage
-          , icon: Icon(Icons.send,color: kPrimaryColor,))
+          IconButton(
+              onPressed: _enteredMessaged.trim().isEmpty ? null : _sendMessage,
+              icon: Icon(
+                Icons.send,
+                color: kPrimaryColor,
+              ))
         ],
       ),
     );
