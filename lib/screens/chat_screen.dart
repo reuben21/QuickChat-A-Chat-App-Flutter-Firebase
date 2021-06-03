@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,10 +13,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    Firebase.initializeApp().whenComplete(() {
-      print("completed");
-      setState(() {});
-    });
+
     super.initState();
   }
 
