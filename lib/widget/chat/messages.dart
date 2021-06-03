@@ -27,13 +27,13 @@ class Messages extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text("Loading");
           }
-          final documents = snapshot.data!.docs;
-          print(user!.uid.toString());
+          final documents = snapshot.data.docs;
+          print(user.uid.toString());
           return new ListView.builder(
 
               reverse: true,
               itemCount: documents.length,
-              itemBuilder: (ctx, index) => MessageBubble( documents[index]['text'], user!.uid.toString() == documents[index]['userId'].toString())
+              itemBuilder: (ctx, index) => MessageBubble( documents[index]['text'],documents[index]['username'], user.uid.toString() == documents[index]['userId'].toString())
                   );
         });
   }

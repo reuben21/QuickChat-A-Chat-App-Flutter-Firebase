@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class MessageBubble extends StatelessWidget {
   MessageBubble(
     this.message,
+    this.username,
     this.isMe,
   );
 
   final String message;
+  final String username;
   final bool isMe;
 
   @override
@@ -17,7 +19,7 @@ class MessageBubble extends StatelessWidget {
       children: <Widget>[
         Container(
           decoration: BoxDecoration(
-            color: isMe ?senderMessageColor : receiverMessageColor,
+            color: isMe ? senderMessageColor : receiverMessageColor,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12),
               topRight: Radius.circular(12),
@@ -34,12 +36,23 @@ class MessageBubble extends StatelessWidget {
             vertical: 4,
             horizontal: 8,
           ),
-          child: Text(
-            message,
-            style:  isMe
-                  ? Theme.of(context).textTheme.bodyText1
-                  : Theme.of(context).textTheme.bodyText2,
+          child: Column(
+            crossAxisAlignment:
+                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
 
+              Text(
+                message,
+                style: isMe
+                    ? Theme.of(context).textTheme.bodyText1
+                    : Theme.of(context).textTheme.bodyText2,
+                textAlign: isMe ? TextAlign.end : TextAlign.start,
+              ),
+               Text(username,
+                      style: Theme.of(context).textTheme.headline5)
+
+
+            ],
           ),
         ),
       ],

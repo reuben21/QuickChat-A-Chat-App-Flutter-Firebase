@@ -27,13 +27,18 @@ class _NewMessageState extends State<NewMessage> {
 
   void _sendMessage() async {
     final user = await FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid.toString())
+        .get();
     FocusScope.of(context).unfocus();
     FirebaseFirestore.instance
         .collection('chat')
         .add({
           'text': _enteredMessaged,
           'createdAt': Timestamp.now(),
-          'userId': user!.uid.toString()
+          'userId': user.uid.toString(),
+          'username':userData['username']
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
