@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../colors.dart';
-import '../widget/auth_form.dart';
+import '../widget/auth/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
   @override

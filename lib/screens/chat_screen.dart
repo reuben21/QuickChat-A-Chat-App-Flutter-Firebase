@@ -1,4 +1,5 @@
 import 'package:chat_app_firebase/colors.dart';
+import 'package:chat_app_firebase/widget/chat/messages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -52,23 +53,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ]),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('chat').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
-            }
-            final documents = snapshot.data!.docs;
-            return new ListView.builder(
-                itemCount: documents.length,
-                itemBuilder: (ctx, index) => Container(
-                      child: new Text(documents[index]['text']),
-                    ));
-          }),
+      body: Container(child:Column(children: [
+        Expanded(child: Messages())
+      ],)),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           FirebaseFirestore.instance
