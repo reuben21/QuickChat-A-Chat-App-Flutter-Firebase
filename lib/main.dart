@@ -44,6 +44,7 @@ class _MyAppState extends State<MyApp> {
         accentColor: kPrimaryColorAccent,
         textTheme: ThemeData.light().textTheme.copyWith(
               bodyText1: GoogleFonts.lato(fontSize: 15, color: kSecondaryColor),
+          headline6: GoogleFonts.lato(fontSize: 15, color: kSecondaryColor,fontWeight: FontWeight.w700),
               headline5: GoogleFonts.lato(fontSize: 12, color: kSecondaryColor),
               headline4: GoogleFonts.lato(fontSize: 14, color: kSecondaryColor),
               headline3: GoogleFonts.lato(fontSize: 16, color: kSecondaryColor),

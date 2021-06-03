@@ -30,7 +30,8 @@ class _NewMessageState extends State<NewMessage> {
         .collection('chat')
         .add({
         'text':_enteredMessaged,
-      'createdAt':Timestamp.now()
+      'createdAt':Timestamp.now(),
+      'userId':User
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

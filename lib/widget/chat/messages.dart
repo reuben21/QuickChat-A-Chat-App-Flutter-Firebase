@@ -1,3 +1,5 @@
+import 'package:bubble/bubble.dart';
+import 'package:chat_app_firebase/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +25,16 @@ class Messages extends StatelessWidget {
               reverse: true,
               itemCount: documents.length,
               itemBuilder: (ctx, index) => Container(
-                    child: new Text(documents[index]['text']),
+                    child:Bubble(
+                      margin: BubbleEdges.only(top: 5,right: 5),
+                      alignment: Alignment.topRight,
+                      nipWidth: 30,
+                      nipHeight: 10,
+
+                      radius: Radius.circular(20.0),
+                      color: kPrimaryColor,
+                      child: Text(documents[index]['text'], textAlign: TextAlign.right,style: Theme.of(context).textTheme.headline6,),
+                    ),
                   ));
         });
   }
