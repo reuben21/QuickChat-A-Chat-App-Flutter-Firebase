@@ -160,18 +160,32 @@ class _ChatsScreenState extends State<ChatsScreen> {
                               width: 1,
                               color: kPrimaryColorAccent,
                             )),
-
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              CircleAvatar(
-                                backgroundColor: kPrimaryColor,
-                                radius: 25,
-                                backgroundImage: NetworkImage(
-                                    'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg'),
-                              ),
+                              FutureBuilder(
+                                  future: FirebaseFirestore.instance
+                                      .collection('chats')
+                                      .doc(documents[index]['id'])
+                                      .get(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Something went wrong');
+                                    }
+
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Text("Loading");
+                                    }
+                                    final documents = snapshot.data;
+                                    return CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage:
+                                          NetworkImage(documents['imageUrl']),
+                                    );
+                                  }),
                               SizedBox(
                                 width: 20,
                               ),
@@ -183,11 +197,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
                             ],
                           ),
                         ),
-                        // ListTile(
-                        //   leading:
-                        //   title:
-                        //
-                        //  ,
                       ),
                     ),
                   ),

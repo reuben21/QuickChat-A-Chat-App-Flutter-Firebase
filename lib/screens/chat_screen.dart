@@ -2,7 +2,6 @@ import 'package:chat_app_firebase/colors.dart';
 import 'package:chat_app_firebase/widget/chat/messages.dart';
 import 'package:chat_app_firebase/widget/chat/new_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {

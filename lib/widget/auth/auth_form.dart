@@ -1,17 +1,13 @@
-import 'package:chat_app_firebase/colors.dart';
+import 'package:chat_app_firebase/widget/pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn,this.isLoading);
+  AuthForm(this.submitFn, this.isLoading);
+
   final bool isLoading;
 
-  final void Function(
-    String email,
-    String password,
-    String userName,
-    bool isLogin,
-    BuildContext context
-  ) submitFn;
+  final void Function(String email, String password, String userName,
+      bool isLogin, BuildContext context) submitFn;
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -30,13 +26,8 @@ class _AuthFormState extends State<AuthForm> {
 
     if (isValid) {
       _formKey.currentState.save();
-     widget.submitFn(
-       _userEmail.trim(),
-       _userPassword.trim(),
-       _userName.trim(),
-       _isLogin,
-       context
-     );
+      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(),
+          _isLogin, context);
     }
   }
 
@@ -44,7 +35,6 @@ class _AuthFormState extends State<AuthForm> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-
         margin: EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Padding(
@@ -54,6 +44,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  if (!_isLogin) UserImagePicker(),
                   TextFormField(
                     key: ValueKey('email'),
                     // validator: (value) {
@@ -99,25 +90,26 @@ class _AuthFormState extends State<AuthForm> {
                     },
                   ),
                   SizedBox(height: 12),
-                  if(widget.isLoading)
-                    CircularProgressIndicator(),
-                  if(!widget.isLoading)
-                  RaisedButton(
-                    child: Text(_isLogin ? 'Login' : 'Signup'),
-                    onPressed: _trySubmit,
-                  ),
-                  if(!widget.isLoading)
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(_isLogin
-                        ? 'Create new account'
-                        : 'I already have an account'),
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                  )
+                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    ElevatedButton(
+                      child: Text(_isLogin ? 'Login' : 'Signup'),
+                      onPressed: _trySubmit,
+                    ),
+                  if (!widget.isLoading)
+                    TextButton(
+                      child: Text(
+                        _isLogin
+                            ? 'Create new account'
+                            : 'I already have an account',
+                        style: Theme.of(context).textTheme.headline2,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                    )
                 ],
               ),
             ),
