@@ -1,9 +1,10 @@
-import 'package:chat_app_firebase/widget/chats/chats.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
+import 'chat_screen.dart';
 
 class ChatsScreen extends StatefulWidget {
 
@@ -24,7 +25,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void dispose() {
     super.dispose();
   }
-
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -79,7 +80,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     } else {
                       final id = FirebaseFirestore.instance
                           .collection('chats').doc().id;
-                      final user = await FirebaseAuth.instance.currentUser;
+
                       final userData = await FirebaseFirestore.instance
                           .collection('users')
                           .doc(user.uid.toString())
@@ -110,7 +111,34 @@ class _ChatsScreenState extends State<ChatsScreen> {
       body: Container(
           child: Column(
         children: [
-          ChatsWidget()
+          StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid.toString())
+              .collection('chats')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
+            final documents = snapshot.data.docs;
+            print(documents);
+            return new ListView.builder(
+              scrollDirection: Axis.vertical,
+              reverse: true,
+              shrinkWrap: true,
+              itemCount: documents.length,
+              itemBuilder: (ctx, index) =>
+                  ListTile(title: Text(documents[index]['chats']),onTap:(){ Navigator.of(context).push(MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (ctx) => ChatScreen(documents[index]['chats'].toString(),documents[index]['id'].toString())
+                  ));}),
+            );
+          })
         ],
       )),
     );
