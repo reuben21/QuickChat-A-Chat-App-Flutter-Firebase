@@ -35,7 +35,8 @@ class _AuthScreenState extends State<AuthScreen> {
       await FirebaseFirestore.instance.collection('users').doc(
           _userCredential.user.uid).set({
         'username':username,
-        'email':email
+        'email':email,
+        'chats':''
       });
     } on PlatformException catch (error) {
       var message = "An error occurred";

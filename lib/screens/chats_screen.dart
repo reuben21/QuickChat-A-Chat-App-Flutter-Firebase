@@ -1,27 +1,38 @@
-import 'package:chat_app_firebase/colors.dart';
-import 'package:chat_app_firebase/widget/chat/messages.dart';
-import 'package:chat_app_firebase/widget/chat/new_message.dart';
+import 'package:chat_app_firebase/widget/chats/chats.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatefulWidget {
-  final String chatName;
-  final String chatId;
+import '../colors.dart';
 
-  ChatScreen(this.chatName, this.chatId);
+class ChatsScreen extends StatefulWidget {
+
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatsScreenState createState() {
+    return _ChatsScreenState();
+  }
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatsScreenState extends State<ChatsScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
           backgroundColor: kPrimaryColorAccent,
           title: Text(
-            widget.chatName,
+            'QuickChat',
             style: Theme.of(context).textTheme.headline3,
           ),
           actions: [
@@ -61,22 +72,47 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       value: 'logout',
                     ),
-
                   ],
-                  onChanged: (itemIdentifier) {
+                  onChanged: (itemIdentifier) async {
                     if (itemIdentifier == 'logout') {
                       FirebaseAuth.instance.signOut();
+                    } else {
+                      final id = FirebaseFirestore.instance
+                          .collection('chats').doc().id;
+                      final user = await FirebaseAuth.instance.currentUser;
+                      final userData = await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid.toString())
+                          .get();
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid.toString())
+                          .collection('chats')
+                          .add({'chats': 'PersonalChat',"id":id});
+                      FirebaseFirestore.instance
+                          .collection('chats')
+                          .doc(user.uid.toString())
+                          .collection(id)
+                          .add({
+                        'text': 'I Created This Chat',
+                        'createdAt': Timestamp.now(),
+                        'userId': user.uid.toString(),
+                        'username':userData['username']
+                      });
+
+
                     }
                   },
                 ),
               ),
             ),
           ]),
-      body: Container(child:Column(children: [
-        Expanded(child: Messages(widget.chatId)),
-        NewMessage()
-      ],)),
-
+      body: Container(
+          child: Column(
+        children: [
+          ChatsWidget()
+        ],
+      )),
     );
   }
 }

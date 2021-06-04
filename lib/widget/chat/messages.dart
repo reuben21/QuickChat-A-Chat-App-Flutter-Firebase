@@ -7,13 +7,18 @@ import 'package:flutter/material.dart';
 import 'message_bubble.dart';
 
 class Messages extends StatelessWidget {
+  final String userId;
+
+
+  Messages(this.userId);
+
   final user =FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('chat')
+            .collection('chats').doc(user.uid.toString()).collection(userId)
             .orderBy(
           'createdAt',
           descending: true,
