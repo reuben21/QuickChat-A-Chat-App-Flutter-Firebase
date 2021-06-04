@@ -1,14 +1,12 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
 import 'chat_screen.dart';
 
 class ChatsScreen extends StatefulWidget {
-
-
   @override
   _ChatsScreenState createState() {
     return _ChatsScreenState();
@@ -25,7 +23,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void dispose() {
     super.dispose();
   }
+
   final user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -79,7 +79,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       FirebaseAuth.instance.signOut();
                     } else {
                       final id = FirebaseFirestore.instance
-                          .collection('chats').doc().id;
+                          .collection('chats')
+                          .doc()
+                          .id;
 
                       final userData = await FirebaseFirestore.instance
                           .collection('users')
@@ -89,19 +91,25 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           .collection('users')
                           .doc(user.uid.toString())
                           .collection('chats')
-                          .add({'chats': 'PersonalChat',"id":id});
+                          .add({'chats': 'PersonalChat', "id": id});
                       FirebaseFirestore.instance
                           .collection('chats')
-                          .doc(user.uid.toString())
+                          .doc(id)
                           .collection(id)
                           .add({
                         'text': 'I Created This Chat',
                         'createdAt': Timestamp.now(),
                         'userId': user.uid.toString(),
-                        'username':userData['username']
+                        'username': userData['username']
                       });
-
-
+                      FirebaseFirestore.instance
+                          .collection('chats')
+                          .doc(id)
+                          .set({
+                        'chatName': 'PersonalChat',
+                        'imageUrl':
+                            'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg'
+                      });
                     }
                   },
                 ),
@@ -112,33 +120,79 @@ class _ChatsScreenState extends State<ChatsScreen> {
           child: Column(
         children: [
           StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid.toString())
-              .collection('chats')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text('Something went wrong');
-            }
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid.toString())
+                  .collection('chats')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
-            }
-            final documents = snapshot.data.docs;
-            print(documents);
-            return new ListView.builder(
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              shrinkWrap: true,
-              itemCount: documents.length,
-              itemBuilder: (ctx, index) =>
-                  ListTile(title: Text(documents[index]['chats']),onTap:(){ Navigator.of(context).push(MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (ctx) => ChatScreen(documents[index]['chats'].toString(),documents[index]['id'].toString())
-                  ));}),
-            );
-          })
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text("Loading");
+                }
+                final documents = snapshot.data.docs;
+                print(documents);
+                return new ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  reverse: true,
+                  shrinkWrap: true,
+                  itemCount: documents.length,
+                  itemBuilder: (ctx, index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (ctx) => ChatScreen(
+                                    documents[index]['chats'].toString(),
+                                    documents[index]['id'].toString())));
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            border: Border.all(
+                              width: 1,
+                              color: kPrimaryColorAccent,
+                            )),
+
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundColor: kPrimaryColor,
+                                radius: 25,
+                                backgroundImage: NetworkImage(
+                                    'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg'),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                documents[index]['chats'],
+                                style: Theme.of(context).textTheme.headline2,
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        ),
+                        // ListTile(
+                        //   leading:
+                        //   title:
+                        //
+                        //  ,
+                      ),
+                    ),
+                  ),
+                );
+              })
         ],
       )),
     );

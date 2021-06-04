@@ -31,13 +31,14 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         _userCredential = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        await FirebaseFirestore.instance.collection('users').doc(
+            _userCredential.user.uid).set({
+          'username':username,
+          'email':email,
+          'chats':''
+        });
       }
-      await FirebaseFirestore.instance.collection('users').doc(
-          _userCredential.user.uid).set({
-        'username':username,
-        'email':email,
-        'chats':''
-      });
+
     } on PlatformException catch (error) {
       var message = "An error occurred";
       if (error.message != null) {

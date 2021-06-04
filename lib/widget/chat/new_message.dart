@@ -5,6 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NewMessage extends StatefulWidget {
+  final String ChatId;
+
+
+  NewMessage(this.ChatId);
+
   @override
   _NewMessageState createState() {
     return _NewMessageState();
@@ -27,21 +32,16 @@ class _NewMessageState extends State<NewMessage> {
 
   void _sendMessage() async {
     final user = await FirebaseAuth.instance.currentUser;
-    final id = FirebaseFirestore.instance
-        .collection('chats').doc().id;
     final userData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid.toString())
         .get();
     FocusScope.of(context).unfocus();
-    // FirebaseFirestore.instance
-    //     .collection('chats').doc(user.uid.toString()).set({
-    //   'createdAt': Timestamp.now(),
-    //   'users':FieldValue.arrayUnion([user.uid.toString()]),
-    // }).then((value) => print("Chat Created"))
-    //     .catchError((error) => print("Failed to add user: $error"));
+
     FirebaseFirestore.instance
-        .collection('chats').doc('').collection('messages').add({
+        .collection('chats')
+        .doc(widget.ChatId)
+        .collection(widget.ChatId).add({
           'text': _enteredMessaged,
           'createdAt': Timestamp.now(),
           'userId': user.uid.toString(),

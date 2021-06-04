@@ -56,12 +56,12 @@ class _AuthFormState extends State<AuthForm> {
                 children: <Widget>[
                   TextFormField(
                     key: ValueKey('email'),
-                    validator: (value) {
-                      if (value.isEmpty || value.contains('@')) {
-                        return 'Please enter a valid email address.';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value.isEmpty || value.contains('@')) {
+                    //     return 'Please enter a valid email address.';
+                    //   }
+                    //   return null;
+                    // },
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email address',

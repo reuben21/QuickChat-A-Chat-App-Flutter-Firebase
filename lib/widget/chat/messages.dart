@@ -18,7 +18,7 @@ class Messages extends StatelessWidget {
     // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('chats').doc(user.uid.toString()).collection(userId)
+            .collection('chats').doc(userId).collection(userId)
             .orderBy(
           'createdAt',
           descending: true,
