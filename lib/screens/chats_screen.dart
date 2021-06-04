@@ -159,7 +159,10 @@ class _ChatsScreenState extends State<ChatsScreen> {
                             border: Border.all(
                               width: 1,
                               color: kPrimaryColorAccent,
-                            )),
+                            ),
+                          color: kPrimaryColorAccent
+
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(

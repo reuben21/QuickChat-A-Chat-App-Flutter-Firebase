@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 class NewMessage extends StatefulWidget {
   final String ChatId;
 
-
   NewMessage(this.ChatId);
 
   @override
@@ -31,6 +30,7 @@ class _NewMessageState extends State<NewMessage> {
   }
 
   void _sendMessage() async {
+
     final user = await FirebaseAuth.instance.currentUser;
     final userData = await FirebaseFirestore.instance
         .collection('users')
@@ -41,11 +41,12 @@ class _NewMessageState extends State<NewMessage> {
     FirebaseFirestore.instance
         .collection('chats')
         .doc(widget.ChatId)
-        .collection(widget.ChatId).add({
-          'text': _enteredMessaged,
+        .collection(widget.ChatId)
+        .add({
+          'text':  _controller.text,
           'createdAt': Timestamp.now(),
           'userId': user.uid.toString(),
-          'username':userData['username']
+          'username': userData['username']
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -61,18 +62,26 @@ class _NewMessageState extends State<NewMessage> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: TextField(
-                controller: _controller,
-                onChanged: (value) {
-                  _enteredMessaged = value;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Send a Message',
-                  labelStyle: TextStyle(color: kPrimaryColor),
-                )),
+            child: TextFormField(
+              controller: _controller,
+              key: ValueKey('username'),
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter characters';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: 'Send a Message',
+                labelStyle: TextStyle(color: kPrimaryColor),
+              ),
+              onSaved: (value) {
+                _enteredMessaged = value;
+              },
+            ),
           ),
           IconButton(
-              onPressed: _enteredMessaged.trim().isEmpty ? null : _sendMessage,
+              onPressed: _sendMessage,
               icon: Icon(
                 Icons.send,
                 color: kPrimaryColor,

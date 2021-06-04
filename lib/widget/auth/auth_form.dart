@@ -25,6 +25,13 @@ class _AuthFormState extends State<AuthForm> {
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
+    if(_imagePicked == null && _isLogin == false){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please Select an Image'), backgroundColor: Theme
+              .of(context)
+              .errorColor,));
+      return;
+    }
 
     if (isValid) {
       _formKey.currentState.save();

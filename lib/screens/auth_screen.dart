@@ -23,13 +23,6 @@ class _AuthScreenState extends State<AuthScreen> {
       bool isLogin, BuildContext ctx, pickedImage) async {
     UserCredential _userCredential;
 
-    if(pickedImage == null ){
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please Select an Image'), backgroundColor: Theme
-              .of(context)
-              .errorColor,));
-      return;
-    }
 
     try {
       setState(() {
@@ -43,14 +36,17 @@ class _AuthScreenState extends State<AuthScreen> {
             email: email, password: password);
 
         
-        final ref = await FirebaseStorage.instance.ref('user_images').child('${_userCredential.user.uid}.jpg');
+        final ref = FirebaseStorage.instance.ref('user_images').child('${_userCredential.user.uid}.jpg');
 
-        ref.putFile(pickedImage).whenComplete(() => null);
-        
+        await ref.putFile(pickedImage).whenComplete(() => null);
+
+        final url = await ref.getDownloadURL();
+
         await FirebaseFirestore.instance.collection('users').doc(
             _userCredential.user.uid).set({
           'username':username,
           'email':email,
+          'imageUrl':url
         });
       }
 
