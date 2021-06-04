@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,8 +20,17 @@ class _AuthScreenState extends State<AuthScreen> {
   void _submitAuthForm(String email,
       String password,
       String username,
-      bool isLogin, BuildContext ctx) async {
+      bool isLogin, BuildContext ctx, pickedImage) async {
     UserCredential _userCredential;
+
+    if(pickedImage == null ){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Please Select an Image'), backgroundColor: Theme
+              .of(context)
+              .errorColor,));
+      return;
+    }
+
     try {
       setState(() {
         _isLoading = true;
@@ -31,11 +41,16 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         _userCredential = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+
+        
+        final ref = await FirebaseStorage.instance.ref('user_images').child('${_userCredential.user.uid}.jpg');
+
+        ref.putFile(pickedImage).whenComplete(() => null);
+        
         await FirebaseFirestore.instance.collection('users').doc(
             _userCredential.user.uid).set({
           'username':username,
           'email':email,
-          'chats':''
         });
       }
 
