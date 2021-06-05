@@ -45,11 +45,26 @@ class _ChatProfileState extends State<ChatProfile> {
     await ref.putFile(pickedImage).whenComplete(() => null);
 
     final url = await ref.getDownloadURL();
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid.toString())
+        .get();
 
     FirebaseFirestore.instance
         .collection('chats')
         .doc(widget.chatId.toString())
         .update({"imageUrl": url, "chatName": chatName});
+    FirebaseFirestore.instance
+        .collection('chats')
+        .doc(widget.chatId.toString())
+        .collection(widget.chatId.toString())
+        .add({
+      'text': 'I Created This Chat',
+      'createdAt': Timestamp.now(),
+      'userId': user.uid.toString(),
+      'username': userData['username'],
+      'id':2
+    });
   }
 
   void _startEditGroup(BuildContext ctx) {
@@ -172,7 +187,6 @@ class _ChatProfileState extends State<ChatProfile> {
                       return Text("Loading");
                     }
                     final documents = snapshot.data.docs;
-                    print(documents[0]['email']);
                     return new ListView.builder(
                         scrollDirection: Axis.vertical,
                         reverse: true,

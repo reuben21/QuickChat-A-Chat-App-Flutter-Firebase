@@ -5,16 +5,32 @@ import 'package:flutter/material.dart';
 class MessageBubble extends StatelessWidget {
   MessageBubble(
     this.message,
+    this.id,
     this.username,
     this.isMe,
   );
 
+  final int id;
   final String message;
   final String username;
   final bool isMe;
 
   @override
   Widget build(BuildContext context) {
+    if(id==1) {
+      return Bubble(
+        alignment: Alignment.center,
+        color: Color.fromRGBO(212, 234, 244, 1.0),
+        child: Text('${username} Created This Chat', textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0)),
+      );
+    }
+    if(id==2) {
+      return Bubble(
+        alignment: Alignment.center,
+        color: Color.fromRGBO(212, 234, 244, 1.0),
+        child: Text('${username} updated Chat Name', textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0)),
+      );
+    }
     return Bubble(
       margin: isMe
           ? BubbleEdges.only(top: 10, left: 40)

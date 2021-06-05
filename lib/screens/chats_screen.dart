@@ -41,7 +41,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
         .collection('users')
         .doc(user.uid.toString())
         .collection('chats')
-        .add({'chats': chatName, "id": id,});
+        .add({ "id": id});
     FirebaseFirestore.instance
         .collection('chats')
         .doc(id)
@@ -50,7 +50,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
       'text': 'I Created This Chat',
       'createdAt': Timestamp.now(),
       'userId': user.uid.toString(),
-      'username': userData['username']
+      'username': userData['username'],
+      'id':1
     });
     FirebaseFirestore.instance
         .collection('chats')
@@ -237,6 +238,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                   .collection('chats')
                                   .doc(documents[index]['id']).snapshots(),
                               builder: (context, snapshot) {
+
                                 if (snapshot.hasError) {
                                   return Text('Something went wrong');
                                 }
@@ -245,9 +247,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                     ConnectionState.waiting) {
                                   return Text("Loading");
                                 }
-                                final documents = snapshot.data['imageUrl'];
+                                // final documents = snapshot.data['imageUrl'];
 
-                                return  Row(
+                                return Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               CircleAvatar(
@@ -264,7 +266,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                 textAlign: TextAlign.left,
                               ),
 
-                            ],  );}),
+                            ],  );
+
+                              }),
                           ),
                         ),
                       ),

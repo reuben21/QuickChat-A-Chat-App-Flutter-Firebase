@@ -36,7 +36,7 @@ class Messages extends StatelessWidget {
 
               reverse: true,
               itemCount: documents.length,
-              itemBuilder: (ctx, index) => MessageBubble( documents[index]['text'],documents[index]['username'], user.uid.toString() == documents[index]['userId'].toString())
+              itemBuilder: (ctx, index) => MessageBubble( documents[index]['text'],documents[index]['id'],documents[index]['username'], user.uid.toString() == documents[index]['userId'].toString())
                   );
         });
   }
