@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../colors.dart';
 import '../pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -59,11 +62,17 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  Container(
+                    child: Text('Quick Chat',style: GoogleFonts.lato(fontSize: 40, color: kPrimaryColor),),
+
+                  ),SizedBox(height: 40,),
                   if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: ValueKey('email'),
+                    autocorrect:false,
+                    textCapitalization: TextCapitalization.none,
                     // validator: (value) {
-                    //   if (value.isEmpty || value.contains('@')) {
+                    //   if (value.contains('@')) {
                     //     return 'Please enter a valid email address.';
                     //   }
                     //   return null;
