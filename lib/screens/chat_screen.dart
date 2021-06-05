@@ -1,3 +1,5 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../../colors.dart';
 import '../../screens/chat_profile.dart';
 import '../../widget/chat/messages.dart';
@@ -16,6 +18,16 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  @override
+  void initState() {
+    FirebaseMessaging.instance.requestPermission();
+    FirebaseMessaging.instance.subscribeToTopic('chats');
+
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -86,6 +86,20 @@ class _MyAppState extends State<MyApp> {
             ));
       }
     });
+    FirebaseMessaging.instance.requestPermission();
+    FirebaseMessaging.onMessage.listen((event) {
+      final message = event.data;
+      print('event '+message.toString());
+
+    });
+
+    FirebaseMessaging.onBackgroundMessage((message) {
+      final data = message.data;
+      print('message '+data.toString());
+      return;
+    });
+
+
     getToken();
 
   }
