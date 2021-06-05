@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.reubencoutinho.quick_chat_app_firebase">
    <application
-        android:label="quick_chat_app_firebase"
+       android:name=".Application"
+       android:label="quick_chat_app_firebase"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
