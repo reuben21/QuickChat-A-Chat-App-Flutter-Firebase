@@ -1,3 +1,5 @@
+import 'package:chat_app_firebase/widget/chat/add_chat.dart';
+import 'package:chat_app_firebase/widget/chat/create_chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,8 +25,85 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void dispose() {
     super.dispose();
   }
-
   final user = FirebaseAuth.instance.currentUser;
+  Future<void> _addNewTransaction(String chatName) async {
+    print(chatName);
+    final id = FirebaseFirestore.instance
+        .collection('chats')
+        .doc()
+        .id;
+    //
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid.toString())
+        .get();
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid.toString())
+        .collection('chats')
+        .add({'chats': chatName, "id": id,});
+    FirebaseFirestore.instance
+        .collection('chats')
+        .doc(id)
+        .collection(id)
+        .add({
+      'text': 'I Created This Chat',
+      'createdAt': Timestamp.now(),
+      'userId': user.uid.toString(),
+      'username': userData['username']
+    });
+    FirebaseFirestore.instance
+        .collection('chats')
+        .doc(id).set({
+      'chatName': chatName,
+      'imageUrl':
+          'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg',
+      'users': FieldValue.arrayUnion([user.uid.toString()])
+    });
+  }
+
+
+  Future<void> _addChat(String id) async {
+    print(id);
+
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid.toString())
+        .collection('chats')
+        .add({"id": id});
+
+    FirebaseFirestore.instance
+        .collection('chats')
+        .doc(id).update({
+      'users': FieldValue.arrayUnion([user.uid.toString()])
+    });
+  }
+
+  void _startAddChat(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (bCtx) {
+          return GestureDetector(
+            onTap: () {},
+            child: AddChat(_addChat),
+            behavior: HitTestBehavior.opaque,
+          );
+        });
+  }
+  void _startAddNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (bCtx) {
+          return GestureDetector(
+            onTap: () {},
+            child: NewTransaction(_addNewTransaction),
+            behavior: HitTestBehavior.opaque,
+          );
+        });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +142,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.add_comment_outlined),
+                            Icon(Icons.three_p_outlined),
                             SizedBox(
                               width: 8,
                             ),
@@ -92,38 +171,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     if (itemIdentifier == 'logout') {
                       FirebaseAuth.instance.signOut();
                     } else if(itemIdentifier == 'createChat') {
-                      final id = FirebaseFirestore.instance
-                          .collection('chats')
-                          .doc()
-                          .id;
+                      _startAddNewTransaction(context);
 
-                      final userData = await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid.toString())
-                          .get();
-                      // FirebaseFirestore.instance
-                      //     .collection('users')
-                      //     .doc(user.uid.toString())
-                      //     .collection('chats')
-                      //     .add({'chats': 'Group Chat', "id": id});
-                      // FirebaseFirestore.instance
-                      //     .collection('chats')
-                      //     .doc(id)
-                      //     .collection(id)
-                      //     .add({
-                      //   'text': 'I Created This Chat',
-                      //   'createdAt': Timestamp.now(),
-                      //   'userId': user.uid.toString(),
-                      //   'username': userData['username']
-                      // });
-                      FirebaseFirestore.instance
-                          .collection('chats')
-                          .doc('rqOdWgBo1oFg8m6Vc3i5').update({
-                        // 'chatName': 'Group Chat',
-                        // 'imageUrl':
-                        //     'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg',
-                        'users': FieldValue.arrayUnion([user.uid.toString()])
-                      });
+                    }else if(itemIdentifier == 'enterChat') {
+                      _startAddChat(context);
+
                     }
                   },
                 ),
@@ -148,7 +200,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   return Text("Loading");
                 }
                 final documents = snapshot.data.docs;
-                print(documents.map((doc)=>doc['id']));
+
                 return new ListView.builder(
                   scrollDirection: Axis.vertical,
                   reverse: true,
@@ -165,7 +217,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
                             MaterialPageRoute(
                                 fullscreenDialog: true,
                                 builder: (ctx) => ChatScreen(
-                                    documents[index]['chats'].toString(),
                                     documents[index]['id'].toString())));
                       },
                       child: Container(

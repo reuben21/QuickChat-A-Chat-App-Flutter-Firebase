@@ -6,9 +6,10 @@ import '../../colors.dart';
 class ChatProfile extends StatefulWidget {
   final String image;
   final String chatName;
+  final String chatId;
   final List listOfUsers;
 
-  ChatProfile(this.image, this.chatName, this.listOfUsers);
+  ChatProfile(this.image,this.chatId, this.chatName, this.listOfUsers);
 
   @override
   _ChatProfileState createState() {
@@ -63,6 +64,24 @@ class _ChatProfileState extends State<ChatProfile> {
                   fit: BoxFit.cover,
                 ),
               ),
+              Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      border: Border.all(
+                        width: 1,
+                        color: kPrimaryColorAccent,
+                      ),
+                      color: kPrimaryColorAccent),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SelectableText(
+                      '${widget.chatId}',
+                      style: TextStyle(fontSize: 15,color:kPrimaryColor),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
               Container(
                   width: double.infinity,
                   margin: EdgeInsets.all(5),

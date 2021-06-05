@@ -6,10 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String chatName;
+
   final String chatId;
 
-  ChatScreen(this.chatName, this.chatId);
+  ChatScreen(this.chatId);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -53,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       context,
                       MaterialPageRoute(
                           fullscreenDialog: true,
-                          builder: (ctx) => ChatProfile(documents['imageUrl'],widget.chatName.toString(),documents['users'])));
+                          builder: (ctx) => ChatProfile(documents['imageUrl'],widget.chatId.toString(),documents['chatName'],documents['users'])));
                 },
                 child: Container(
                   width: double.infinity,
