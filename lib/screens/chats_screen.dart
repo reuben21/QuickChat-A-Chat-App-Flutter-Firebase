@@ -53,11 +53,25 @@ class _ChatsScreenState extends State<ChatsScreen> {
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Add Chat')
+                            Text('Create Chat')
                           ],
                         ),
                       ),
                       value: 'createChat',
+                    ),
+                    DropdownMenuItem(
+                      child: Container(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.add_comment_outlined),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            Text('Enter Chat')
+                          ],
+                        ),
+                      ),
+                      value: 'enterChat',
                     ),
                     DropdownMenuItem(
                       child: Container(
@@ -77,7 +91,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   onChanged: (itemIdentifier) async {
                     if (itemIdentifier == 'logout') {
                       FirebaseAuth.instance.signOut();
-                    } else {
+                    } else if(itemIdentifier == 'createChat') {
                       final id = FirebaseFirestore.instance
                           .collection('chats')
                           .doc()
@@ -87,28 +101,28 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           .collection('users')
                           .doc(user.uid.toString())
                           .get();
+                      // FirebaseFirestore.instance
+                      //     .collection('users')
+                      //     .doc(user.uid.toString())
+                      //     .collection('chats')
+                      //     .add({'chats': 'Group Chat', "id": id});
+                      // FirebaseFirestore.instance
+                      //     .collection('chats')
+                      //     .doc(id)
+                      //     .collection(id)
+                      //     .add({
+                      //   'text': 'I Created This Chat',
+                      //   'createdAt': Timestamp.now(),
+                      //   'userId': user.uid.toString(),
+                      //   'username': userData['username']
+                      // });
                       FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(user.uid.toString())
                           .collection('chats')
-                          .add({'chats': 'PersonalChat', "id": id});
-                      FirebaseFirestore.instance
-                          .collection('chats')
-                          .doc(id)
-                          .collection(id)
-                          .add({
-                        'text': 'I Created This Chat',
-                        'createdAt': Timestamp.now(),
-                        'userId': user.uid.toString(),
-                        'username': userData['username']
-                      });
-                      FirebaseFirestore.instance
-                          .collection('chats')
-                          .doc(id)
-                          .set({
-                        'chatName': 'PersonalChat',
-                        'imageUrl':
-                            'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg'
+                          .doc('rqOdWgBo1oFg8m6Vc3i5').update({
+                        // 'chatName': 'Group Chat',
+                        // 'imageUrl':
+                        //     'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg',
+                        'users': FieldValue.arrayUnion([user.uid.toString()])
                       });
                     }
                   },
@@ -134,13 +148,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   return Text("Loading");
                 }
                 final documents = snapshot.data.docs;
-                print(documents);
+                print(documents.map((doc)=>doc['id']));
                 return new ListView.builder(
                   scrollDirection: Axis.vertical,
                   reverse: true,
                   shrinkWrap: true,
                   itemCount: documents.length,
-                  itemBuilder: (ctx, index) => Padding(
+                  itemBuilder: (ctx, index) =>
+
+                      Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
@@ -165,45 +181,44 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
+                          child:StreamBuilder<DocumentSnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('chats')
+                                  .doc(documents[index]['id']).snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Something went wrong');
+                                }
+
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Text("Loading");
+                                }
+                                final documents = snapshot.data['imageUrl'];
+
+                                return  Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              FutureBuilder(
-                                  future: FirebaseFirestore.instance
-                                      .collection('chats')
-                                      .doc(documents[index]['id'])
-                                      .get(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Text('Something went wrong');
-                                    }
-
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Text("Loading");
-                                    }
-                                    final documents = snapshot.data;
-                                    return CircleAvatar(
+                              CircleAvatar(
                                       radius: 25,
                                       backgroundImage:
-                                          NetworkImage(documents['imageUrl']),
-                                    );
-                                  }),
+                                          NetworkImage(snapshot.data['imageUrl']),
+                                    ),
                               SizedBox(
                                 width: 20,
                               ),
                               Text(
-                                documents[index]['chats'],
+                                snapshot.data['chatName'],
                                 style: Theme.of(context).textTheme.headline2,
                                 textAlign: TextAlign.left,
                               ),
-                            ],
+
+                            ],  );}),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
               })
         ],
       )),

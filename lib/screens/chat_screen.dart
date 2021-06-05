@@ -1,4 +1,5 @@
 import 'package:chat_app_firebase/colors.dart';
+import 'package:chat_app_firebase/widget/chat/chat_profile.dart';
 import 'package:chat_app_firebase/widget/chat/messages.dart';
 import 'package:chat_app_firebase/widget/chat/new_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -44,10 +45,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 return Text("Loading");
               }
               final documents = snapshot.data;
+
               return InkWell(
 
                 onTap: (){
-                  print("Hello");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          fullscreenDialog: true,
+                          builder: (ctx) => ChatProfile(documents['imageUrl'],widget.chatName.toString(),documents['users'])));
                 },
                 child: Container(
                   width: double.infinity,
