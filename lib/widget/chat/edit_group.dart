@@ -24,9 +24,6 @@ class _EditGroupState extends State<EditGroup> {
   void _submitData() {
     final enteredTitle = chatName.text;
 
-    if (enteredTitle.isEmpty || _imagePicked == null) {
-      return;
-    }
     widget.addTx(
         chatName.text,_imagePicked);
     Navigator.of(context).pop();

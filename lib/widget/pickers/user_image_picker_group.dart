@@ -30,7 +30,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
 
   void _pickImageFromCamera() async {
     final pickedFile = await picker.getImage(
-        source: ImageSource.camera, imageQuality: 50, maxWidth: 150);
+        source: ImageSource.camera, imageQuality: 80, maxWidth: 400);
 
     setState(() {
       if (pickedFile != null) {
@@ -44,7 +44,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
 
   void _pickImageFromGallery() async {
     final pickedFile = await picker.getImage(
-        source: ImageSource.gallery, imageQuality: 50, maxWidth: 150);
+        source: ImageSource.gallery, imageQuality: 80, maxWidth: 400);
 
     setState(() {
       if (pickedFile != null) {

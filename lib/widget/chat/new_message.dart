@@ -46,7 +46,8 @@ class _NewMessageState extends State<NewMessage> {
           'text':  _controller.text,
           'createdAt': Timestamp.now(),
           'userId': user.uid.toString(),
-          'username': userData['username']
+          'username': userData['username'],
+          'id':5
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

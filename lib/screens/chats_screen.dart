@@ -114,7 +114,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
           backgroundColor: kPrimaryColorAccent,
           title: Text(
             'QuickChat',
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.headline1,
           ),
           actions: [
             Padding(

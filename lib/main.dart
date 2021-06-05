@@ -42,10 +42,10 @@ class _MyAppState extends State<MyApp> {
               .light()
               .textTheme
               .copyWith(
-            bodyText2: GoogleFonts.lato(fontSize: 15,
+            bodyText2: GoogleFonts.lato(fontSize: 18,
                 color: kSecondaryColor,
                 fontWeight: FontWeight.w400),
-            bodyText1: GoogleFonts.lato(fontSize: 15,
+            bodyText1: GoogleFonts.lato(fontSize: 18,
                 color: kPrimaryColorAccent,
                 fontWeight: FontWeight.w400),
             headline6: GoogleFonts.lato(fontSize: 15,
@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
             headline4: GoogleFonts.lato(fontSize: 14, color: kSecondaryColor),
             headline3: GoogleFonts.lato(fontSize: 16, color: kSecondaryColor),
             headline2: GoogleFonts.lato(fontSize: 18, color: kSecondaryColor),
-            headline1: GoogleFonts.lato(fontSize: 25, color: kSecondaryColor),
+            headline1: GoogleFonts.lato(fontSize: 20, color: kPrimaryColor),
           ),
         ),
         home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(),

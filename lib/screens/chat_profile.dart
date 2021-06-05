@@ -36,35 +36,73 @@ class _ChatProfileState extends State<ChatProfile> {
   }
 
   Future<void> _editGroup(String chatName, File pickedImage) async {
-
-
     final ref = FirebaseStorage.instance
         .ref('group_images')
         .child('${widget.chatId.toString()}.jpg');
-
-    await ref.putFile(pickedImage).whenComplete(() => null);
-
-    final url = await ref.getDownloadURL();
     final userData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid.toString())
         .get();
+    if ((chatName == null || chatName == '') && pickedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+              "You Could Update the Chat Name or Profile Picture or Both")));
+    } else if ((chatName == null || chatName == '') && pickedImage != null) {
+      await ref.putFile(pickedImage).whenComplete(() => null);
 
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(widget.chatId.toString())
-        .update({"imageUrl": url, "chatName": chatName});
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(widget.chatId.toString())
-        .collection(widget.chatId.toString())
-        .add({
-      'text': 'I Created This Chat',
-      'createdAt': Timestamp.now(),
-      'userId': user.uid.toString(),
-      'username': userData['username'],
-      'id':2
-    });
+      final url = await ref.getDownloadURL();
+
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.chatId.toString())
+          .update({"imageUrl": url, 'chatName': widget.chatName.toString()});
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.chatId.toString())
+          .collection(widget.chatId.toString())
+          .add({
+        'text': 'Updated the Profile Picture',
+        'createdAt': Timestamp.now(),
+        'userId': user.uid.toString(),
+        'username': userData['username'],
+        'id': 2
+      });
+    } else if ((chatName != null || chatName != '') && pickedImage == null) {
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.chatId.toString())
+          .update({"chatName": chatName, 'imageUrl': widget.image.toString()});
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.chatId.toString())
+          .collection(widget.chatId.toString())
+          .add({
+        'text': 'Updated the Chat Name',
+        'createdAt': Timestamp.now(),
+        'userId': user.uid.toString(),
+        'username': userData['username'],
+        'id': 2
+      });
+    } else {
+      await ref.putFile(pickedImage).whenComplete(() => null);
+
+      final url = await ref.getDownloadURL();
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.chatId.toString())
+          .update({"chatName": chatName, "imageUrl": url});
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.chatId.toString())
+          .collection(widget.chatId.toString())
+          .add({
+        'text': 'Updated the Chat Name and Profile Picture',
+        'createdAt': Timestamp.now(),
+        'userId': user.uid.toString(),
+        'username': userData['username'],
+        'id': 2
+      });
+    }
   }
 
   void _startEditGroup(BuildContext ctx) {
