@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chat_app_firebase/widget/pickers/user_image_picker_group.dart';
+import '../pickers/user_image_picker_group.dart';
 import '../../colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

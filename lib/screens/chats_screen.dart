@@ -1,5 +1,5 @@
-import 'package:chat_app_firebase/widget/chat/add_chat.dart';
-import 'package:chat_app_firebase/widget/chat/create_chat.dart';
+import '../../widget/chat/add_chat.dart';
+import '../../widget/chat/create_chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

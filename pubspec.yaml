@@ -35,6 +35,8 @@ dependencies:
   bubble: ^1.2.1
   image_picker: ^0.8.0+1
   firebase_storage: ^8.1.1
+  firebase_messaging: ^10.0.1
+  flutter_local_notifications: ^6.0.0
 
 dev_dependencies:
   flutter_test:

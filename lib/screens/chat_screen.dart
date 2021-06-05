@@ -1,7 +1,7 @@
-import 'package:chat_app_firebase/colors.dart';
-import 'package:chat_app_firebase/screens/chat_profile.dart';
-import 'package:chat_app_firebase/widget/chat/messages.dart';
-import 'package:chat_app_firebase/widget/chat/new_message.dart';
+import '../../colors.dart';
+import '../../screens/chat_profile.dart';
+import '../../widget/chat/messages.dart';
+import '../../widget/chat/new_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 

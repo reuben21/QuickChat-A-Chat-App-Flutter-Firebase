@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chat_app_firebase/widget/pickers/user_image_picker.dart';
+import '../pickers/user_image_picker.dart';
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {

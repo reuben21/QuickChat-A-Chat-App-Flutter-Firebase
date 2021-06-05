@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:856596572128:android:d56723daeab24e26876d85",
+        "mobilesdk_app_id": "1:856596572128:android:5ca52baac0d45e38876d85",
         "android_client_info": {
-          "package_name": "com.reubencoutinho.chat_app_firebase"
+          "package_name": "com.reubencoutinho.quick_chat_app_firebase"
         }
       },
       "oauth_client": [

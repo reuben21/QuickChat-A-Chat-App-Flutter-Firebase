@@ -1,5 +1,5 @@
 import 'package:bubble/bubble.dart';
-import 'package:chat_app_firebase/colors.dart';
+import '../../colors.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
