@@ -1,15 +1,11 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../colors.dart';
 
 class UserImagePickerGroup extends StatefulWidget {
-  final Function(File pickedImage) imagePickFn;
+  final Function(File pickedImage,String message) imagePickFn;
 
   UserImagePickerGroup(this.imagePickFn);
 
@@ -42,7 +38,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        widget.imagePickFn(_image);
+        widget.imagePickFn(_image,_controller.text);
       } else {
         print('No image selected.');
       }
@@ -56,7 +52,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        widget.imagePickFn(_image);
+        widget.imagePickFn(_image,_controller.text);
       } else {
         print('No image selected.');
       }
@@ -66,26 +62,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
   void _sendMessage() async {
     print(_image.path.toString());
     print(_controller.text);
-    // final user = await FirebaseAuth.instance.currentUser;
-    // final userData = await FirebaseFirestore.instance
-    //     .collection('users')
-    //     .doc(user.uid.toString())
-    //     .get();
-    // FocusScope.of(context).unfocus();
 
-    // FirebaseFirestore.instance
-    //     .collection('chats')
-    //     .doc(widget.ChatId)
-    //     .collection(widget.ChatId)
-    //     .add({
-    //   'text': _controller.text,
-    //   'createdAt': Timestamp.now(),
-    //   'userId': user.uid.toString(),
-    //   'username': userData['username'],
-    //   'id': 5
-    // })
-    //     .then((value) => print("User Added"))
-    //     .catchError((error) => print("Failed to add user: $error"));
     _controller.clear();
   }
 

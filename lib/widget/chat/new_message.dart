@@ -1,13 +1,11 @@
 import 'package:chat_app_firebase/widget/chat/message_image_sender.dart';
-import 'package:chat_app_firebase/widget/pickers/user_image_picker_gallery.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-
 import '../../colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+
 
 class NewMessage extends StatefulWidget {
   final String ChatId;
@@ -122,7 +120,7 @@ class _NewMessageState extends State<NewMessage> {
 
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (ctx)=>MessageImageSender(),
+                      builder: (ctx)=>MessageImageSender(widget.ChatId.toString()),
                     )
                   );
 
