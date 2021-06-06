@@ -60,8 +60,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
   }
 
   Future<void> _addChat(String id) async {
-    print(id);
 
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid.toString())
+        .get();
     FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid.toString())
@@ -70,6 +73,13 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
     FirebaseFirestore.instance.collection('chats').doc(id).update({
       'users': FieldValue.arrayUnion([user.uid.toString()])
+    });
+    FirebaseFirestore.instance.collection('chats').doc(id).collection(id).add({
+      'text': 'Entered This Chat',
+      'createdAt': Timestamp.now(),
+      'userId': user.uid.toString(),
+      'username': userData['username'],
+      'id': 10
     });
   }
 

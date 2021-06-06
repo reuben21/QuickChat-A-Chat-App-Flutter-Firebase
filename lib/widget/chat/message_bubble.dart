@@ -19,6 +19,18 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (id == 10) {
+      return Container(
+        margin: EdgeInsets.all(10),
+        child: Bubble(
+          alignment: Alignment.center,
+          color: kPrimaryColorAccent,
+          child: Text('${username} Entered This Chat',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15.0, color: kPrimaryColor)),
+        ),
+      );
+    }
     if (id == 1) {
       return Container(
         margin: EdgeInsets.all(10),
