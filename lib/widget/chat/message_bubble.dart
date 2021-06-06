@@ -9,6 +9,7 @@ class MessageBubble extends StatelessWidget {
     this.username,
     this.imageUrl,
     this.isMe,
+      this.index
   );
 
   final int id;
@@ -16,6 +17,7 @@ class MessageBubble extends StatelessWidget {
   final String username;
   final String imageUrl;
   final bool isMe;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -104,11 +106,11 @@ class MessageBubble extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return DetailScreen(imageUrl);
+                    return DetailScreen(index,imageUrl);
                   }));
                 },
                 child: Hero(
-                  tag: 'imageHeroHero',
+                  tag: index.toString(),
                   child: ClipRRect(
                     borderRadius:BorderRadius.all(Radius.circular(5)) ,
                     child: FadeInImage(
@@ -167,17 +169,20 @@ class MessageBubble extends StatelessWidget {
 }
 
 class DetailScreen extends StatelessWidget {
+  final int index;
   final String imageUrl;
 
-  DetailScreen(this.imageUrl);
+
+  DetailScreen(this.index, this.imageUrl);
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: GestureDetector(
         child: Center(
           child: Hero(
-            tag: 'imageHeroHero',
+            tag: index.toString(),
             child: Image.network(imageUrl),
           ),
         ),

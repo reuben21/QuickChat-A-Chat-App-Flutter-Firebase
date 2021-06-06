@@ -46,7 +46,7 @@ class Messages extends StatelessWidget {
                             ? null
                             : documents[index]['imageUrl'],
                         user.uid.toString() ==
-                            documents[index]['userId'].toString());
+                            documents[index]['userId'].toString(),index);
           }
                 return  MessageBubble(
                   documents[index]['text'],
@@ -54,7 +54,7 @@ class Messages extends StatelessWidget {
                   documents[index]['username'],
                   null,
                   user.uid.toString() ==
-                      documents[index]['userId'].toString());
+                      documents[index]['userId'].toString(),index);
         } );  });
   }
 }
