@@ -19,27 +19,31 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if(id==1) {
+    if (id == 1) {
       return Container(
         margin: EdgeInsets.all(10),
         child: Bubble(
           alignment: Alignment.center,
-          color:kPrimaryColorAccent,
-          child: Text('${username} Created This Chat', textAlign: TextAlign.center, style: TextStyle(fontSize: 15.0,color: kPrimaryColor)),
+          color: kPrimaryColorAccent,
+          child: Text('${username} Created This Chat',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15.0, color: kPrimaryColor)),
         ),
       );
     }
-    if(id==2) {
+    if (id == 2) {
       return Container(
         margin: EdgeInsets.all(10),
         child: Bubble(
           alignment: Alignment.center,
-          color:kPrimaryColorAccent,
-          child: Text('${username} ${message}', textAlign: TextAlign.center,style: TextStyle(fontSize: 15.0,color: kPrimaryColor)),
+          color: kPrimaryColorAccent,
+          child: Text('${username} ${message}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15.0, color: kPrimaryColor)),
         ),
       );
     }
-    if(id==5) {
+    if (id == 5) {
       return Bubble(
         margin: isMe
             ? BubbleEdges.only(top: 10, left: 40)
@@ -48,8 +52,8 @@ class MessageBubble extends StatelessWidget {
         nip: isMe ? BubbleNip.rightTop : BubbleNip.leftTop,
         color: isMe ? senderMessageColor : receiverMessageColor,
         child: Column(
-
-          crossAxisAlignment:isMe ? CrossAxisAlignment.end:CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
               message,
@@ -58,12 +62,16 @@ class MessageBubble extends StatelessWidget {
                   ? Theme.of(context).textTheme.bodyText1
                   : Theme.of(context).textTheme.bodyText2,
             ),
-            Text(username, style: Theme.of(context).textTheme.headline5,  textAlign: isMe ? TextAlign.end : TextAlign.start,)
+            Text(
+              username,
+              style: Theme.of(context).textTheme.headline5,
+              textAlign: isMe ? TextAlign.end : TextAlign.start,
+            )
           ],
         ),
       );
     }
-    if(id==6) {
+    if (id == 6) {
       return Bubble(
         margin: isMe
             ? BubbleEdges.only(top: 10, left: 40)
@@ -72,10 +80,21 @@ class MessageBubble extends StatelessWidget {
         nip: isMe ? BubbleNip.rightTop : BubbleNip.leftTop,
         color: isMe ? senderMessageColor : receiverMessageColor,
         child: Column(
-
-          crossAxisAlignment:isMe ? CrossAxisAlignment.end:CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Image.network(imageUrl),
+            Container(
+              width: 200,
+                height:200,
+                decoration: BoxDecoration(
+                  color: kPrimaryColorAccent,
+                  borderRadius: BorderRadius.all(Radius.circular(5))
+                ),
+                child: Image.network(
+              imageUrl,
+              width: 100,
+              height: 100,
+            )),
             Text(
               message,
               textAlign: isMe ? TextAlign.end : TextAlign.start,
@@ -83,7 +102,11 @@ class MessageBubble extends StatelessWidget {
                   ? Theme.of(context).textTheme.bodyText1
                   : Theme.of(context).textTheme.bodyText2,
             ),
-            Text(username, style: Theme.of(context).textTheme.headline5,  textAlign: isMe ? TextAlign.end : TextAlign.start,)
+            Text(
+              username,
+              style: Theme.of(context).textTheme.headline5,
+              textAlign: isMe ? TextAlign.end : TextAlign.start,
+            )
           ],
         ),
       );
@@ -96,8 +119,8 @@ class MessageBubble extends StatelessWidget {
       nip: isMe ? BubbleNip.rightTop : BubbleNip.leftTop,
       color: isMe ? senderMessageColor : receiverMessageColor,
       child: Column(
-
-        crossAxisAlignment:isMe ? CrossAxisAlignment.end:CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             message,
@@ -106,7 +129,11 @@ class MessageBubble extends StatelessWidget {
                 ? Theme.of(context).textTheme.bodyText1
                 : Theme.of(context).textTheme.bodyText2,
           ),
-          Text(username, style: Theme.of(context).textTheme.headline5,  textAlign: isMe ? TextAlign.end : TextAlign.start,)
+          Text(
+            username,
+            style: Theme.of(context).textTheme.headline5,
+            textAlign: isMe ? TextAlign.end : TextAlign.start,
+          )
         ],
       ),
     );

@@ -124,7 +124,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
               padding: const EdgeInsets.only(right: 10),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton(
-                  icon: Icon(Icons.more_vert),
+                  icon: Icon(Icons.more_horiz_outlined),
                   iconEnabledColor: kPrimaryColor,
                   dropdownColor: kPrimaryColorAccent,
                   items: [
