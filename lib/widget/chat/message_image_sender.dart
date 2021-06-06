@@ -33,10 +33,12 @@ class _MessageImageSenderState extends State<MessageImageSender> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(title: Text('Send An Image')),
-      body: Column(
-        children: <Widget>[
-          UserImagePickerGroup(_pickedImage)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            UserImagePickerGroup(_pickedImage)
+          ],
+        ),
       ),
     );
   }
