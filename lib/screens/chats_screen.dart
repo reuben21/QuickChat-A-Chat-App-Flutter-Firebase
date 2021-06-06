@@ -261,10 +261,20 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                 return Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage: NetworkImage(
-                                          snapshot.data['imageUrl']),
+                                    GestureDetector(
+                                      onTap:(){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                                          return DetailScreen(documents[index]['id'],snapshot.data['imageUrl']);
+                                        }));
+                                      },
+                                      child: Hero(
+                                        tag:documents[index]['id'],
+                                        child: CircleAvatar(
+                                          radius: 25,
+                                          backgroundImage: NetworkImage(
+                                              snapshot.data['imageUrl']),
+                                        ),
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 20,
@@ -286,6 +296,32 @@ class _ChatsScreenState extends State<ChatsScreen> {
               })
         ],
       )),
+    );
+  }
+}
+
+
+class DetailScreen extends StatelessWidget {
+  final String chatId;
+  final String chatImage;
+
+
+  DetailScreen(this.chatId, this.chatImage);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: chatId,
+            child: Image.network(chatImage),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }
