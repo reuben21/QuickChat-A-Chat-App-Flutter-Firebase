@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app_firebase/widget/loading/loading_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../colors.dart';
@@ -62,6 +63,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  LoadingWidget(200,200),
                   Container(
                     child: Text('Quick Chat',style: GoogleFonts.lato(fontSize: 40, color: kPrimaryColor),),
 

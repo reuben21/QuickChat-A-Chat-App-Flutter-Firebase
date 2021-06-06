@@ -1,6 +1,7 @@
 import 'package:chat_app_firebase/screens/auth_screen.dart';
 
 import 'package:chat_app_firebase/screens/chats_screen.dart';
+import 'package:chat_app_firebase/screens/splash_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -144,6 +145,9 @@ class _MyAppState extends State<MyApp> {
         ),
         home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting) {
+              return SplashScreen();
+            }
             if (snapshot.hasData) {
               return ChatsScreen();
             }

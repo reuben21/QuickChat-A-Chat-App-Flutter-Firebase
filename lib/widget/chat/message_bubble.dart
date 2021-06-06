@@ -7,12 +7,14 @@ class MessageBubble extends StatelessWidget {
     this.message,
     this.id,
     this.username,
+    this.imageUrl,
     this.isMe,
   );
 
   final int id;
   final String message;
   final String username;
+  final String imageUrl;
   final bool isMe;
 
   @override
@@ -49,6 +51,31 @@ class MessageBubble extends StatelessWidget {
 
           crossAxisAlignment:isMe ? CrossAxisAlignment.end:CrossAxisAlignment.start,
           children: [
+            Text(
+              message,
+              textAlign: isMe ? TextAlign.end : TextAlign.start,
+              style: isMe
+                  ? Theme.of(context).textTheme.bodyText1
+                  : Theme.of(context).textTheme.bodyText2,
+            ),
+            Text(username, style: Theme.of(context).textTheme.headline5,  textAlign: isMe ? TextAlign.end : TextAlign.start,)
+          ],
+        ),
+      );
+    }
+    if(id==6) {
+      return Bubble(
+        margin: isMe
+            ? BubbleEdges.only(top: 10, left: 40)
+            : BubbleEdges.only(top: 10, right: 40),
+        alignment: isMe ? Alignment.topRight : Alignment.topLeft,
+        nip: isMe ? BubbleNip.rightTop : BubbleNip.leftTop,
+        color: isMe ? senderMessageColor : receiverMessageColor,
+        child: Column(
+
+          crossAxisAlignment:isMe ? CrossAxisAlignment.end:CrossAxisAlignment.start,
+          children: [
+            Image.network(imageUrl),
             Text(
               message,
               textAlign: isMe ? TextAlign.end : TextAlign.start,

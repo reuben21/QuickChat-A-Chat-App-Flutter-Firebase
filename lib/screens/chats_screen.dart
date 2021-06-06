@@ -1,3 +1,5 @@
+import 'package:chat_app_firebase/widget/loading/loading_widget.dart';
+
 import '../../widget/chat/add_chat.dart';
 import '../../widget/chat/create_chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,6 +113,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
+        leading: LoadingWidget(20,20),
           backgroundColor: kPrimaryColorAccent,
           title: Text(
             'QuickChat',
@@ -129,11 +132,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.add_comment_outlined),
+                            Icon(Icons.add_comment_outlined,color: kPrimaryColor,),
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Create Chat')
+                            Text('Create Chat',style:Theme.of(context).textTheme.headline2)
                           ],
                         ),
                       ),
@@ -143,11 +146,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.three_p_outlined),
+                            Icon(Icons.three_p_outlined,color: kPrimaryColor,),
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Enter Chat')
+                            Text('Enter Chat',style:Theme.of(context).textTheme.headline2)
                           ],
                         ),
                       ),
@@ -157,11 +160,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.exit_to_app),
+                            Icon(Icons.exit_to_app,color: kPrimaryColor,),
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Logout')
+                            Text('Logout',style:Theme.of(context).textTheme.headline2)
                           ],
                         ),
                       ),
@@ -245,7 +248,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return Text("Loading");
+                                  return Center(child: LoadingWidget(100, 100));
                                 }
                                 // final documents = snapshot.data['imageUrl'];
 
