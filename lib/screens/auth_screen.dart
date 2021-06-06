@@ -35,7 +35,6 @@ class _AuthScreenState extends State<AuthScreen> {
         _userCredential = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        
         final ref = FirebaseStorage.instance.ref('user_images').child('${_userCredential.user.uid}.jpg');
 
         await ref.putFile(pickedImage).whenComplete(() => null);
@@ -48,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
           'email':email,
           'imageUrl':url
         });
+
       }
 
     } on PlatformException catch (error) {

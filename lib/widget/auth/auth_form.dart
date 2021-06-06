@@ -12,7 +12,7 @@ class AuthForm extends StatefulWidget {
   final bool isLoading;
 
   final void Function(String email, String password, String userName,
-      bool isLogin, BuildContext context,File pickedImage) submitFn;
+      bool isLogin, BuildContext context, File pickedImage) submitFn;
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -29,25 +29,23 @@ class _AuthFormState extends State<AuthForm> {
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
-    if(_imagePicked == null && _isLogin == false){
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please Select an Image'), backgroundColor: Theme
-              .of(context)
-              .errorColor,));
+    if (_imagePicked == null && _isLogin == false) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Please Select an Image'),
+        backgroundColor: Theme.of(context).errorColor,
+      ));
       return;
     }
 
     if (isValid) {
       _formKey.currentState.save();
       widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(),
-          _isLogin, context,_imagePicked);
+          _isLogin, context, _imagePicked);
     }
   }
 
-  void _pickedImage(File pickedImage){
-
-      _imagePicked = pickedImage;
-
+  void _pickedImage(File pickedImage) {
+    _imagePicked = pickedImage;
   }
 
   @override
@@ -63,15 +61,21 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  LoadingWidget(200,200),
+                  LoadingWidget(200, 200),
                   Container(
-                    child: Text('Quick Chat',style: GoogleFonts.lato(fontSize: 40, color: kPrimaryColor),),
-
-                  ),SizedBox(height: 40,),
+                    child: Text(
+                      'Quick Chat',
+                      style:
+                          GoogleFonts.lato(fontSize: 40, color: kPrimaryColor),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
                   if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: ValueKey('email'),
-                    autocorrect:false,
+                    autocorrect: false,
                     textCapitalization: TextCapitalization.none,
                     // validator: (value) {
                     //   if (value.contains('@')) {
@@ -118,8 +122,19 @@ class _AuthFormState extends State<AuthForm> {
                   SizedBox(height: 12),
                   if (widget.isLoading) CircularProgressIndicator(),
                   if (!widget.isLoading)
-                    ElevatedButton(
-                      child: Text(_isLogin ? 'Login' : 'Signup'),
+                    TextButton.icon(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(kPrimaryColor)),
+                      icon: Icon(
+                        Icons.login_outlined,
+                        color: kPrimaryColorAccent,
+                      ),
+                      label: Text(
+                        _isLogin ? 'Login' : 'Signup',
+                        style: GoogleFonts.lato(
+                            fontSize: 20, color: kPrimaryColorAccent),
+                      ),
                       onPressed: _trySubmit,
                     ),
                   if (!widget.isLoading)

@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:giphy_picker/giphy_picker.dart';
 
 class NewMessage extends StatefulWidget {
   final String ChatId;
@@ -19,6 +19,9 @@ class NewMessage extends StatefulWidget {
 }
 
 class _NewMessageState extends State<NewMessage> {
+  final user = FirebaseAuth.instance.currentUser;
+
+  GiphyGif _gif;
   final _controller = new TextEditingController();
   var _enteredMessaged = '';
   static const _actionTitles = ['Create Post', 'Upload Photo', 'Upload Video'];
@@ -51,11 +54,11 @@ class _NewMessageState extends State<NewMessage> {
   }
 
   void _sendMessage() async {
-    final user = await FirebaseAuth.instance.currentUser;
     final userData = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid.toString())
         .get();
+
     FocusScope.of(context).unfocus();
 
     FirebaseFirestore.instance
@@ -74,9 +77,14 @@ class _NewMessageState extends State<NewMessage> {
     _controller.clear();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
+
+
     return Container(
       margin: EdgeInsets.only(top: 8),
       padding: EdgeInsets.all(8),
@@ -129,12 +137,53 @@ class _NewMessageState extends State<NewMessage> {
                 onLongPress: () => print('FIRST CHILD LONG PRESS'),
               ),
               SpeedDialChild(
-                child: Icon(Icons.videocam_outlined,color: kPrimaryColorAccent,size: 30,),
+                child: Icon(Icons.gif_outlined,color: kPrimaryColorAccent,size: 30,),
                 backgroundColor:kPrimaryColor ,
                 label: 'Third',
                 labelStyle: TextStyle(fontSize: 18.0),
-                onTap: () => print('THIRD CHILD'),
-                onLongPress: () => print('THIRD CHILD LONG PRESS'),
+                onTap: () async {
+                  // request your Giphy API key at https://developers.giphy.com/
+
+                  final gif = await GiphyPicker.pickGif(
+                    context: context,
+                    apiKey: 'Ud22109Q5vY0sG9mZbQRET8xBc8zJYte',
+                    fullScreenDialog: false,
+                    previewType: GiphyPreviewType.previewWebp,
+                    decorator: GiphyDecorator(
+                      showAppBar: false,
+                      searchElevation: 4,
+                      giphyTheme: ThemeData.light().copyWith(
+                        inputDecorationTheme: InputDecorationTheme(
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                      ),
+                    ),
+                  );
+                  final userData = await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid.toString())
+                      .get();
+
+                  FirebaseFirestore.instance
+                      .collection('chats')
+                      .doc(widget.ChatId)
+                      .collection(widget.ChatId)
+                      .add({
+                    'text': '',
+                    'imageUrl': gif.images.original.url,
+                    'createdAt': Timestamp.now(),
+                    'userId': user.uid.toString(),
+                    'username': userData['username'],
+                    'id': 6
+                  })
+                      .then((value) => print("User Added"))
+                      .catchError((error) => print("Failed to add user: $error"));
+
+
+                },
               ),
             ],
           ),

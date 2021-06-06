@@ -1,3 +1,4 @@
+import 'package:chat_app_firebase/screens/profile.dart';
 import 'package:chat_app_firebase/widget/loading/loading_widget.dart';
 
 import '../../widget/chat/add_chat.dart';
@@ -27,13 +28,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void dispose() {
     super.dispose();
   }
+
   final user = FirebaseAuth.instance.currentUser;
+
   Future<void> _addNewTransaction(String chatName) async {
     print(chatName);
-    final id = FirebaseFirestore.instance
-        .collection('chats')
-        .doc()
-        .id;
+    final id = FirebaseFirestore.instance.collection('chats').doc().id;
     //
     final userData = await FirebaseFirestore.instance
         .collection('users')
@@ -43,21 +43,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
         .collection('users')
         .doc(user.uid.toString())
         .collection('chats')
-        .add({ "id": id});
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(id)
-        .collection(id)
-        .add({
+        .add({"id": id});
+    FirebaseFirestore.instance.collection('chats').doc(id).collection(id).add({
       'text': 'I Created This Chat',
       'createdAt': Timestamp.now(),
       'userId': user.uid.toString(),
       'username': userData['username'],
-      'id':1
+      'id': 1
     });
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(id).set({
+    FirebaseFirestore.instance.collection('chats').doc(id).set({
       'chatName': chatName,
       'imageUrl':
           'https://dogtime.com/assets/uploads/2011/03/puppy-development.jpg',
@@ -65,10 +59,8 @@ class _ChatsScreenState extends State<ChatsScreen> {
     });
   }
 
-
   Future<void> _addChat(String id) async {
     print(id);
-
 
     FirebaseFirestore.instance
         .collection('users')
@@ -76,9 +68,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
         .collection('chats')
         .add({"id": id});
 
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(id).update({
+    FirebaseFirestore.instance.collection('chats').doc(id).update({
       'users': FieldValue.arrayUnion([user.uid.toString()])
     });
   }
@@ -94,6 +84,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
           );
         });
   }
+
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
@@ -106,14 +97,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
         });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        leading: LoadingWidget(20,20),
+          leading: LoadingWidget(20, 20),
           backgroundColor: kPrimaryColorAccent,
           title: Text(
             'QuickChat',
@@ -132,11 +121,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.add_comment_outlined,color: kPrimaryColor,),
+                            Icon(
+                              Icons.add_comment_outlined,
+                              color: kPrimaryColor,
+                            ),
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Create Chat',style:Theme.of(context).textTheme.headline2)
+                            Text('Create Chat',
+                                style: Theme.of(context).textTheme.headline2)
                           ],
                         ),
                       ),
@@ -146,25 +139,34 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.three_p_outlined,color: kPrimaryColor,),
+                            Icon(
+                              Icons.three_p_outlined,
+                              color: kPrimaryColor,
+                            ),
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Enter Chat',style:Theme.of(context).textTheme.headline2)
+                            Text('Enter Chat',
+                                style: Theme.of(context).textTheme.headline2)
                           ],
                         ),
                       ),
                       value: 'enterChat',
                     ),
+
                     DropdownMenuItem(
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(Icons.exit_to_app,color: kPrimaryColor,),
+                            Icon(
+                              Icons.exit_to_app,
+                              color: kPrimaryColor,
+                            ),
                             SizedBox(
                               width: 8,
                             ),
-                            Text('Logout',style:Theme.of(context).textTheme.headline2)
+                            Text('Logout',
+                                style: Theme.of(context).textTheme.headline2)
                           ],
                         ),
                       ),
@@ -173,13 +175,11 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   ],
                   onChanged: (itemIdentifier) async {
                     if (itemIdentifier == 'logout') {
-                      FirebaseAuth.instance.signOut();
-                    } else if(itemIdentifier == 'createChat') {
+
+                    } else if (itemIdentifier == 'createChat') {
                       _startAddNewTransaction(context);
-
-                    }else if(itemIdentifier == 'enterChat') {
+                    } else if (itemIdentifier == 'enterChat') {
                       _startAddChat(context);
-
                     }
                   },
                 ),
@@ -210,9 +210,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   reverse: true,
                   shrinkWrap: true,
                   itemCount: documents.length,
-                  itemBuilder: (ctx, index) =>
-
-                      Padding(
+                  itemBuilder: (ctx, index) => Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GestureDetector(
                       onTap: () {
@@ -231,17 +229,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                               width: 1,
                               color: kPrimaryColorAccent,
                             ),
-                          color: kPrimaryColorAccent
-
-                        ),
+                            color: kPrimaryColorAccent),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child:StreamBuilder<DocumentSnapshot>(
+                          child: StreamBuilder<DocumentSnapshot>(
                               stream: FirebaseFirestore.instance
                                   .collection('chats')
-                                  .doc(documents[index]['id']).snapshots(),
+                                  .doc(documents[index]['id'])
+                                  .snapshots(),
                               builder: (context, snapshot) {
-
                                 if (snapshot.hasError) {
                                   return Text('Something went wrong');
                                 }
@@ -253,30 +249,30 @@ class _ChatsScreenState extends State<ChatsScreen> {
                                 // final documents = snapshot.data['imageUrl'];
 
                                 return Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              CircleAvatar(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    CircleAvatar(
                                       radius: 25,
-                                      backgroundImage:
-                                          NetworkImage(snapshot.data['imageUrl']),
+                                      backgroundImage: NetworkImage(
+                                          snapshot.data['imageUrl']),
                                     ),
-                              SizedBox(
-                                width: 20,
-                              ),
-                              Text(
-                                snapshot.data['chatName'],
-                                style: Theme.of(context).textTheme.headline2,
-                                textAlign: TextAlign.left,
-                              ),
-
-                            ],  );
-
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      snapshot.data['chatName'],
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ],
+                                );
                               }),
-                          ),
                         ),
                       ),
                     ),
-                  );
+                  ),
+                );
               })
         ],
       )),

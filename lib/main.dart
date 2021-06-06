@@ -2,7 +2,9 @@ import 'package:chat_app_firebase/screens/auth_screen.dart';
 import 'package:chat_app_firebase/screens/chat_profile.dart';
 
 import 'package:chat_app_firebase/screens/chats_screen.dart';
+import 'package:chat_app_firebase/screens/profile.dart';
 import 'package:chat_app_firebase/screens/splash_screen.dart';
+import 'package:chat_app_firebase/widget/drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'colors.dart';
-
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -37,17 +38,15 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().whenComplete(() {
-
-  });
+  await Firebase.initializeApp().whenComplete(() {});
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
-      AndroidFlutterLocalNotificationsPlugin>()
+          AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
   runApp(MyApp());
 }
@@ -65,9 +64,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     var initialzationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettings =
-    InitializationSettings(android: initialzationSettingsAndroid);
+        InitializationSettings(android: initialzationSettingsAndroid);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -91,20 +90,18 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance.requestPermission();
     FirebaseMessaging.onMessage.listen((event) {
       final message = event.data;
-      print('event '+message.toString());
-
+      print('event ' + message.toString());
     });
 
     FirebaseMessaging.onBackgroundMessage((message) {
       final data = message.data;
-      print('message '+data.toString());
+      print('message ' + data.toString());
       return;
     });
 
-
     getToken();
-
   }
+
   getToken() async {
     token = await FirebaseMessaging.instance.getToken();
     setState(() {
@@ -113,49 +110,50 @@ class _MyAppState extends State<MyApp> {
     print(token);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'QuickChat',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryIconTheme: IconThemeData(color: kSecondaryColor),
-          primaryColorLight: kPrimaryColor,
-          primaryColor: kPrimaryColor,
-          accentColor: kPrimaryColorAccent,
-          textTheme: ThemeData
-              .light()
-              .textTheme
-              .copyWith(
-            bodyText2: GoogleFonts.lato(fontSize: 18,
-                color: kSecondaryColor,
-                fontWeight: FontWeight.w400),
-            bodyText1: GoogleFonts.lato(fontSize: 18,
-                color: kPrimaryColorAccent,
-                fontWeight: FontWeight.w400),
-            headline6: GoogleFonts.lato(fontSize: 15,
-                color: kPrimaryColorAccent,
-                fontWeight: FontWeight.w400),
-            headline5: GoogleFonts.lato(fontSize: 12, color: kSecondaryColor),
-            headline4: GoogleFonts.lato(fontSize: 14, color: kSecondaryColor),
-            headline3: GoogleFonts.lato(fontSize: 16, color: kPrimaryColor),
-            headline2: GoogleFonts.lato(fontSize: 18, color: kPrimaryColor),
-            headline1: GoogleFonts.lato(fontSize: 20, color: kPrimaryColor),
-          ),
-        ),
-        home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if(snapshot.connectionState == ConnectionState.waiting) {
-              return SplashScreen();
-            }
-            if (snapshot.hasData) {
-              return ChatsScreen();
-            }
-            return AuthScreen();
-          },),
-      routes:{
-
+      title: 'QuickChat',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryIconTheme: IconThemeData(color: kSecondaryColor),
+        primaryColorLight: kPrimaryColor,
+        primaryColor: kPrimaryColor,
+        accentColor: kPrimaryColorAccent,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              bodyText2: GoogleFonts.lato(
+                  fontSize: 18,
+                  color: kSecondaryColor,
+                  fontWeight: FontWeight.w400),
+              bodyText1: GoogleFonts.lato(
+                  fontSize: 18,
+                  color: kPrimaryColorAccent,
+                  fontWeight: FontWeight.w400),
+              headline6: GoogleFonts.lato(
+                  fontSize: 15,
+                  color: kPrimaryColorAccent,
+                  fontWeight: FontWeight.w400),
+              headline5: GoogleFonts.lato(fontSize: 12, color: kSecondaryColor),
+              headline4: GoogleFonts.lato(fontSize: 14, color: kSecondaryColor),
+              headline3: GoogleFonts.lato(fontSize: 16, color: kPrimaryColor),
+              headline2: GoogleFonts.lato(fontSize: 18, color: kPrimaryColor),
+              headline1: GoogleFonts.lato(fontSize: 20, color: kPrimaryColor),
+            ),
+      ),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SplashScreen();
+          }
+          if (snapshot.hasData) {
+            return TabsScreen();
+          }
+          return AuthScreen();
+        },
+      ),
+      routes: {
+        UserProfile.routeName: (ctx) => UserProfile(),
       },
     );
   }

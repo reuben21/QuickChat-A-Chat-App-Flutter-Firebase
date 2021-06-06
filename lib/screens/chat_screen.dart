@@ -19,9 +19,6 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
-    FirebaseMessaging.instance.requestPermission();
-    FirebaseMessaging.instance.subscribeToTopic('chats');
-
     super.initState();
   }
 
@@ -32,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back,color:kPrimaryColor),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -94,14 +91,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               );
             }),
-        actions: [
-          // IconButton(onPressed: (){}, icon: Icon(Icons.videocam),color: kPrimaryColor,),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.call),
-            color: kPrimaryColor,
-          )
-        ],
       ),
       body: Container(
           child: Column(

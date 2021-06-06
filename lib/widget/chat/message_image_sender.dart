@@ -58,8 +58,7 @@ class _MessageImageSenderState extends State<MessageImageSender> {
         'userId': user.uid.toString(),
         'username': userData['username'],
         'id': 6
-      })
-          .then((value) => print("User Added"))
+      }).then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
       Navigator.of(context).pop();
     } else {
