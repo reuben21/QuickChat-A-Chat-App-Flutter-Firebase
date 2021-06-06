@@ -17,7 +17,7 @@ class MessageImageSender extends StatefulWidget {
 }
 
 class _MessageImageSenderState extends State<MessageImageSender> {
-  File _imagePicked;
+
 
   @override
   void initState() {
@@ -30,37 +30,43 @@ class _MessageImageSenderState extends State<MessageImageSender> {
   }
 
   Future<void> _pickedImage(File pickedImage, String message) async {
-    _imagePicked = pickedImage;
-    final user = await FirebaseAuth.instance.currentUser;
-    final ref = FirebaseStorage.instance
-        .ref('chat_${widget.ChatId}')
-        .child('${widget.ChatId}+${user.uid}+${DateTime.now().toIso8601String()}.jpg');
 
-    await ref.putFile(pickedImage).whenComplete(() => null);
+    if(pickedImage!=null && message.toString().trim() != null) {
+      final user = await FirebaseAuth.instance.currentUser;
+      final ref = FirebaseStorage.instance
+          .ref('chat_${widget.ChatId}')
+          .child('${widget.ChatId}+${user.uid}+${DateTime.now().toIso8601String()}.jpg');
 
-    final url = await ref.getDownloadURL();
+      await ref.putFile(pickedImage).whenComplete(() => null);
 
-    final userData = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid.toString())
-        .get();
-    FocusScope.of(context).unfocus();
+      final url = await ref.getDownloadURL();
 
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(widget.ChatId)
-        .collection(widget.ChatId)
-        .add({
-          'text': message,
-          'imageUrl': url,
-          'createdAt': Timestamp.now(),
-          'userId': user.uid.toString(),
-          'username': userData['username'],
-          'id': 6
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
-    Navigator.of(context).pop();
+      final userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid.toString())
+          .get();
+      FocusScope.of(context).unfocus();
+
+      FirebaseFirestore.instance
+          .collection('chats')
+          .doc(widget.ChatId)
+          .collection(widget.ChatId)
+          .add({
+        'text': message,
+        'imageUrl': url,
+        'createdAt': Timestamp.now(),
+        'userId': user.uid.toString(),
+        'username': userData['username'],
+        'id': 6
+      })
+          .then((value) => print("User Added"))
+          .catchError((error) => print("Failed to add user: $error"));
+      Navigator.of(context).pop();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('You Need to Select an Image')));
+    }
+
+
   }
 
   @override

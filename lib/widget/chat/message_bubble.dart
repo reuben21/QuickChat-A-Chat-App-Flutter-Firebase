@@ -73,6 +73,7 @@ class MessageBubble extends StatelessWidget {
     }
     if (id == 6) {
       return Bubble(
+
         margin: isMe
             ? BubbleEdges.only(top: 10, left: 40)
             : BubbleEdges.only(top: 10, right: 40),
@@ -83,18 +84,29 @@ class MessageBubble extends StatelessWidget {
           crossAxisAlignment:
               isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 200,
-                height:200,
-                decoration: BoxDecoration(
-                  color: kPrimaryColorAccent,
-                  borderRadius: BorderRadius.all(Radius.circular(5))
-                ),
-                child: Image.network(
-              imageUrl,
-              width: 100,
-              height: 100,
-            )),
+             Container(
+                width: 200,
+                  height:200,
+                  decoration: BoxDecoration(
+                    color: kPrimaryColorAccent,
+                    borderRadius: BorderRadius.all(Radius.circular(5))
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) {
+                        return DetailScreen(imageUrl);
+                      }));
+                    },
+                    child:  Hero(
+                      tag: 'imageHero',
+                    child: FadeInImage(
+                        placeholder: AssetImage('assets/images/NoImageFound.png'),
+                        image: NetworkImage(imageUrl),
+                        fit: BoxFit.cover,
+                      ),
+                  ),
+                  ),
+            ),
             Text(
               message,
               textAlign: isMe ? TextAlign.end : TextAlign.start,
@@ -184,5 +196,35 @@ class MessageBubble extends StatelessWidget {
     //     ),
     //   ],
     // );
+  }
+}
+
+
+class DetailScreen extends StatelessWidget {
+
+
+
+  final String imageUrl;
+
+
+  DetailScreen(this.imageUrl);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: 'imageHero',
+            child: Image.network(
+                imageUrl
+            ),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 }

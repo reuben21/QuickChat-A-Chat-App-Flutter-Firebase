@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
-
   final String chatId;
 
   ChatScreen(this.chatId);
@@ -18,7 +17,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   @override
   void initState() {
     FirebaseMessaging.instance.requestPermission();
@@ -27,11 +25,9 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
         leading: Builder(
           builder: (BuildContext context) {
@@ -45,9 +41,11 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         backgroundColor: kPrimaryColorAccent,
         leadingWidth: 50,
-        title:FutureBuilder(
-            future:
-            FirebaseFirestore.instance.collection('chats').doc(widget.chatId).get(),
+        title: FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection('chats')
+                .doc(widget.chatId)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Text('Something went wrong');
@@ -59,13 +57,16 @@ class _ChatScreenState extends State<ChatScreen> {
               final documents = snapshot.data;
 
               return InkWell(
-
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           fullscreenDialog: true,
-                          builder: (ctx) => ChatProfile(documents['imageUrl'],widget.chatId.toString(),documents['chatName'],documents['users'])));
+                          builder: (ctx) => ChatProfile(
+                              documents['imageUrl'],
+                              widget.chatId.toString(),
+                              documents['chatName'],
+                              documents['users'])));
                 },
                 child: Container(
                   width: double.infinity,
@@ -75,27 +76,24 @@ class _ChatScreenState extends State<ChatScreen> {
                         width: 1,
                         color: kPrimaryColorAccent,
                       )),
-
                   child: Row(
-
-
-          children: [
-             CircleAvatar(
+                    children: [
+                      CircleAvatar(
                         radius: 19,
                         backgroundImage: NetworkImage(documents['imageUrl']),
                       ),
-            SizedBox(
-                  width: 8,
-            ),
-            Text(
-                  documents['chatName'],
-                  style: Theme.of(context).textTheme.headline3,
-            ),
-          ],),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        documents['chatName'],
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ],
+                  ),
                 ),
               );
             }),
-
         actions: [
           // IconButton(onPressed: (){}, icon: Icon(Icons.videocam),color: kPrimaryColor,),
           IconButton(

@@ -38,7 +38,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        widget.imagePickFn(_image,_controller.text);
+
       } else {
         print('No image selected.');
       }
@@ -52,7 +52,7 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-        widget.imagePickFn(_image,_controller.text);
+
       } else {
         print('No image selected.');
       }
@@ -60,9 +60,8 @@ class _UserImagePickerGroupState extends State<UserImagePickerGroup> {
   }
 
   void _sendMessage() async {
-    print(_image.path.toString());
-    print(_controller.text);
 
+    widget.imagePickFn(_image,_controller.text);
     _controller.clear();
   }
 

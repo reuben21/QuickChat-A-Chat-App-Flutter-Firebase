@@ -231,8 +231,6 @@ class _ChatProfileState extends State<ChatProfile> {
                         shrinkWrap: true,
                         itemCount: documents.length,
                         itemBuilder: (ctx, index) => Container(
-                              width: double.infinity,
-                              margin: EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
@@ -241,29 +239,60 @@ class _ChatProfileState extends State<ChatProfile> {
                                     color: kPrimaryColorAccent,
                                   ),
                                   color: kPrimaryColorAccent),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                      radius: 25,
-                                      backgroundImage: NetworkImage(
-                                          documents[index]['imageUrl']),
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    Text(
-                                      documents[index]['username'],
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  radius: 25,
+                                  backgroundImage: NetworkImage(
+                                      documents[index]['imageUrl']),
+                                ),
+                                title: Text(
+                                  documents[index]['username'],
+                                  style: Theme.of(context).textTheme.headline2,
+                                  textAlign: TextAlign.left,
+                                ),
+                                subtitle: Text(
+                                  documents[index]['email'],
+                                  style: Theme.of(context).textTheme.headline3,
+                                  textAlign: TextAlign.left,
                                 ),
                               ),
-                            ));
+                            )
+                        // Container(
+                        //   width: double.infinity,
+                        //   margin: EdgeInsets.all(5),
+                        //   decoration: BoxDecoration(
+                        //       borderRadius:
+                        //           BorderRadius.all(Radius.circular(5)),
+                        //       border: Border.all(
+                        //         width: 1,
+                        //         color: kPrimaryColorAccent,
+                        //       ),
+                        //       color: kPrimaryColorAccent),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: Row(
+                        //       crossAxisAlignment: CrossAxisAlignment.center,
+                        //       children: <Widget>[
+                        //         CircleAvatar(
+                        //           radius: 25,
+                        //           backgroundImage: NetworkImage(
+                        //               documents[index]['imageUrl']),
+                        //         ),
+                        //         SizedBox(
+                        //           width: 20,
+                        //         ),
+                        //         Text(
+                        //           documents[index]['username'],
+                        //           style:
+                        //               Theme.of(context).textTheme.headline2,
+                        //           textAlign: TextAlign.left,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // )
+
+                        );
                   }),
             ],
           ),

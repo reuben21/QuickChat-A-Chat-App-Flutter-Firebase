@@ -1,4 +1,5 @@
 import 'package:chat_app_firebase/screens/auth_screen.dart';
+import 'package:chat_app_firebase/screens/chat_profile.dart';
 
 import 'package:chat_app_firebase/screens/chats_screen.dart';
 import 'package:chat_app_firebase/screens/splash_screen.dart';
@@ -152,7 +153,10 @@ class _MyAppState extends State<MyApp> {
               return ChatsScreen();
             }
             return AuthScreen();
-          },)
+          },),
+      routes:{
+
+      },
     );
   }
 }
