@@ -77,12 +77,12 @@ class _AuthFormState extends State<AuthForm> {
                     key: ValueKey('email'),
                     autocorrect: false,
                     textCapitalization: TextCapitalization.none,
-                    // validator: (value) {
-                    //   if (value.contains('@')) {
-                    //     return 'Please enter a valid email address.';
-                    //   }
-                    //   return null;
-                    // },
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter a valid email address.';
+                      }
+                      return null;
+                    },
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       labelText: 'Email address',
