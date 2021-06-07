@@ -164,29 +164,10 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       value: 'enterChat',
                     ),
 
-                    DropdownMenuItem(
-                      child: Container(
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.exit_to_app,
-                              color: kPrimaryColor,
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text('Logout',
-                                style: Theme.of(context).textTheme.headline2)
-                          ],
-                        ),
-                      ),
-                      value: 'logout',
-                    ),
+
                   ],
                   onChanged: (itemIdentifier) async {
-                    if (itemIdentifier == 'logout') {
-
-                    } else if (itemIdentifier == 'createChat') {
+                     if (itemIdentifier == 'createChat') {
                       _startAddNewTransaction(context);
                     } else if (itemIdentifier == 'enterChat') {
                       _startAddChat(context);

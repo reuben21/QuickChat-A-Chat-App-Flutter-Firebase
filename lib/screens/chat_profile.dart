@@ -1,11 +1,12 @@
 import 'dart:io';
 
+import 'package:barcode/barcode.dart';
 import 'package:chat_app_firebase/widget/chat/edit_group.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:barcode_widget/barcode_widget.dart';
 import '../colors.dart';
 
 class ChatProfile extends StatefulWidget {
@@ -24,6 +25,7 @@ class ChatProfile extends StatefulWidget {
 
 class _ChatProfileState extends State<ChatProfile> {
   final user = FirebaseAuth.instance.currentUser;
+  File _barcode;
 
   @override
   void initState() {
@@ -121,8 +123,6 @@ class _ChatProfileState extends State<ChatProfile> {
   Widget build(BuildContext context) {
     // TODO: implement build
 
-    print(widget.listOfUsers);
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: kPrimaryColorAccent,
@@ -174,25 +174,7 @@ class _ChatProfileState extends State<ChatProfile> {
                   ),
                 ],
               ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    border: Border.all(
-                      width: 1,
-                      color: kPrimaryColorAccent,
-                    ),
-                    color: kPrimaryColorAccent),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectableText(
-                    '${widget.chatId}',
-                    style: TextStyle(fontSize: 15, color: kPrimaryColor),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+
               Container(
                   width: double.infinity,
                   margin: EdgeInsets.all(5),
@@ -257,43 +239,55 @@ class _ChatProfileState extends State<ChatProfile> {
                                 ),
                               ),
                             )
-                        // Container(
-                        //   width: double.infinity,
-                        //   margin: EdgeInsets.all(5),
-                        //   decoration: BoxDecoration(
-                        //       borderRadius:
-                        //           BorderRadius.all(Radius.circular(5)),
-                        //       border: Border.all(
-                        //         width: 1,
-                        //         color: kPrimaryColorAccent,
-                        //       ),
-                        //       color: kPrimaryColorAccent),
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: Row(
-                        //       crossAxisAlignment: CrossAxisAlignment.center,
-                        //       children: <Widget>[
-                        //         CircleAvatar(
-                        //           radius: 25,
-                        //           backgroundImage: NetworkImage(
-                        //               documents[index]['imageUrl']),
-                        //         ),
-                        //         SizedBox(
-                        //           width: 20,
-                        //         ),
-                        //         Text(
-                        //           documents[index]['username'],
-                        //           style:
-                        //               Theme.of(context).textTheme.headline2,
-                        //           textAlign: TextAlign.left,
-                        //         ),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // )
+
 
                         );
                   }),
+              Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      border: Border.all(
+                        width: 1,
+                        color: kPrimaryColorAccent,
+                      ),
+                      color: kPrimaryColorAccent),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Chat ID : You Can Enter Id Or Scan Barcode to Enter Chat',
+                      style: TextStyle(fontSize: 15, color: kPrimaryColor),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    border: Border.all(
+                      width: 1,
+                      color: kPrimaryColorAccent,
+                    ),
+                    color: kPrimaryColorAccent),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SelectableText(
+                        '${widget.chatId}',
+                        style: TextStyle(fontSize: 15, color: kPrimaryColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    BarcodeWidget(
+                      barcode: Barcode.qrCode(errorCorrectLevel: BarcodeQRCorrectionLevel.high),
+                      data: widget.chatId.toString(),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ));

@@ -1,3 +1,5 @@
+import 'package:barcode_scan2/platform_wrapper.dart';
+
 import '../../colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +70,18 @@ class _NewTransactionState extends State<NewTransaction> {
                   ),
                 ),
               ),
+          OutlinedButton.icon(
+            onPressed: () async{
+              var result = await BarcodeScanner.scan();
+            },
+            icon: Icon(Icons.add, size: 18, color: kPrimaryColor),
+            label: Text("Scan Barcode Chat",
+                style: TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 18,
+                )),
+          ),
+
 
               OutlinedButton.icon(
                 onPressed: _submitData,
