@@ -21,6 +21,7 @@
   <li> Using Firebase Storage to store images   </li>
   <li> Using Firebase Realtime, For Realtime Firebase Messaging  </li>
   <li> Using Firebase Notifications, For Realtime Notifications  </li>
+  <li> For Animations I Learn How to use the Lottie   </li>
   <li> Integrating various API's like  </li>
   <ul>
   <li> Giphy API </li>
